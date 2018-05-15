@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){
       const card=document.createElement('button');
       //card.setAttribute('src','img/svg/'+nameJpg+'.svg');
       HTMLButtonElement.tyoe='button';
+      card.className='card';
       fragment.appendChild(card);
   }
   const cardGrid=document.getElementsByClassName('grid');
