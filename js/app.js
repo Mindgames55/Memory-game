@@ -30,9 +30,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
   cardGrid[0].addEventListener('click', function(e){
-    if (e.target.nodeName === 'BUTTON'){
-      const coverCard=e.target.firstChild;
-      const flippedCard=e.target.lastChild;
+    if (e.target.nodeName === 'IMG'){
+      const coverCard=e.target;
+      const listOfChild=coverCard.parentNode.children;
+      const flippedCard=(listOfChild[0]===coverCard)?listOfChild[1]:listOfChild[0];
       coverCard.classList.toggle('hidden');
       flippedCard.classList.toggle('hidden');
     }
