@@ -28,4 +28,15 @@ document.addEventListener('DOMContentLoaded', function(){
   const cardGrid=document.getElementsByClassName('grid');
   cardGrid[0].appendChild(fragment);
 
+
+  cardGrid[0].addEventListener('click', function(e){
+    if (e.target.nodeName === 'BUTTON'){
+      const coverCard=e.target.firstChild;
+      const flippedCard=e.target.lastChild;
+      coverCard.classList.toggle('hidden');
+      flippedCard.classList.toggle('hidden');
+    }
+
+  })
+
 });
