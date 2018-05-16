@@ -17,7 +17,12 @@ document.addEventListener('DOMContentLoaded', function(){
       card.className='card';
       const cardImg=document.createElement('img');
       cardImg.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
+      cardImg.className='hidden';
       card.appendChild(cardImg);
+      const cardUncover=document.createElement('img');
+      cardUncover.setAttribute('src','https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
+      cardUncover.className='visible';
+      card.appendChild(cardUncover);
       fragment.appendChild(card);
   }
   const cardGrid=document.getElementsByClassName('grid');

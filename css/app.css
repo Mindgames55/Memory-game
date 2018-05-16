@@ -1,13 +1,32 @@
+#deck{
+  max-width: 150px;
+  margin: auto;
+}
+
 .grid{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-columns: 1fr;
+  grid-gap: 10px;
 }
 
 .card{
   grid-column-start: auto;
   grid-column-end: auto;
-  grid-row: auto;
+}
+
+.hidden{
+  display: none;
+}
+
+button{
+  padding: 0;
+  border: 0;
+}
+
+img{
+  margin: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
