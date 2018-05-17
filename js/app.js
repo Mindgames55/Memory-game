@@ -9,18 +9,18 @@ document.addEventListener('DOMContentLoaded', function(){
     return array.sort(function(a, b){return 0.5 - Math.random()});
   }
 
+  function toggling(element, classesArray){
+    for (let i=0;i<classesArray.length;i++){
+      element.classList.toggle(classesArray[i]);
+    }
+  }
+
   const fragment=document.createDocumentFragment();
   let nameJpg=sorting(8);
   for (let i=0;i<16;i++){
       const btn=document.createElement('button');
       HTMLButtonElement.type='button';
-      btn.className='card';
-      //creates the cover of the card
-      const cardCover=document.createElement('img');
-      cardCover.setAttribute('src','https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
-      cardCover.className='cover';
-      btn.appendChild(cardCover);
-      //create the img element when you flip the card
+      btn.className='card logo-bg';
       const cardFlipped=document.createElement('img');
       cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
       cardFlipped.className='hidden flipped';
@@ -28,44 +28,42 @@ document.addEventListener('DOMContentLoaded', function(){
 
       fragment.appendChild(btn);
   }
-  const cardGrid=document.getElementsByClassName('grid');
-  cardGrid[0].appendChild(fragment);
+  const cardGrid=document.querySelector('.grid');
+  cardGrid.appendChild(fragment);
 
   let firstCardFlipped=false;
-  cardGrid[0].addEventListener('click', function(e){
-    if (e.target.nodeName === 'IMG' & e.target.getAttribute('class')==='cover'){
+  cardGrid.addEventListener('click', function(e){
+    if (e.target.nodeName === 'BUTTON'){
       const coveredCard=e.target;
-      const flippedCardlist=coveredCard.parentNode.getElementsByClassName('flipped');
-      const flippedCard=flippedCardlist[0];
-      coveredCard.classList.toggle('hidden');
+      const flippedCard=coveredCard.firstChild;
+      toggling(coveredCard,['white-bg', 'logo-bg']);
       flippedCard.classList.toggle('hidden');
-      let flippedImgValue='';
       if (!firstCardFlipped){
-        console.log('1 time');
-        flippedImgValue= flippedCard.getAttribute('src');
         flippedCard.classList.toggle('first');
+        coveredCard.classList.toggle('first');
         firstCardFlipped=true;
       }
       else {
+          const flippedFirstCard=document.querySelectorAll('.first');
+          const flippedImgValue=flippedFirstCard[1].getAttribute('src');
           const secondImgValue=flippedCard.getAttribute('src');
           firstCardFlipped=false;
           if (flippedImgValue===secondImgValue){
             //animation success
+            toggling(flippedFirstCard[0],['success']);
+            toggling(coveredCard, ['success'])
             console.log('success');
           }
           else {
             //animation fail
             console.log('fail');
-            const firstBtn=document.getElementsByClassName('first');
-            const btnChildrenFirst=firstBtn[0].parentNode.children;
-            const btnChildrenSecond=flippedCard.parentNode.children;
-
-            for (let i=0;i<btnChildrenFirst.length;i++){
-              btnChildrenFirst[i].classList.toggle('hidden');
-              btnChildrenSecond[i].classList.toggle('hidden');
-            }
-
-
+            toggling(flippedFirstCard[1], ['hidden']);
+            toggling(flippedFirstCard[0],['white-bg', 'logo-bg']);
+            toggling(flippedCard, ['hidden']);
+            toggling(coveredCard, ['white-bg', 'logo-bg']);
+          }
+          for (let i=0;i<flippedFirstCard.length;i++){
+            flippedFirstCard[i].classList.remove('first');
           }
       }
     }

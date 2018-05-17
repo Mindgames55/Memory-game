@@ -19,9 +19,24 @@
   display: none;
 }
 
+.white-bg{
+  background-color: white;
+}
+
+.logo-bg{
+  background-image: url('https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
+}
+
+.success{
+  border:1px solid #37ba49;
+}
+
 button{
+  min-height: 30px;
   padding: 0;
   border: 0;
+  background-size: contain;
+  border-radius: 3px;
 }
 
 img{
