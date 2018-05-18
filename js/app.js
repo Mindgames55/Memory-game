@@ -8,21 +8,22 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     return array.sort(function(a, b){return 0.5 - Math.random()});
   }
-
-  function toggling(element, classesArray){
-    for (let i=0;i<classesArray.length;i++){
-      element.classList.toggle(classesArray[i]);
-    }
+//creates current card object
+  function cardObj(whichCard, btn){
+      let Card={
+      name: whichCard,
+      btnObj: btn,
+      imgObj: btn.firstChild
+    };
+    return Card;
   }
-
-  function storingImgName(Img){
-    return Img.getAttribute('src');
-  }
-
-  function guess(couple, successOrFail){
-      for (let i=0;i<couple.length;i++){
-        couple[i].classList.toggle(successOrFail);
+//toggling classes to objects
+  function toggling(elements, classesArray){
+    for (let j=0;j<elements.length;j++){
+      for (let i=0;i<classesArray.length;i++){
+        elements[j].classList.toggle(classesArray[i]);
       }
+    }
   }
 
   function createDeck(){
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function(){
     for (let i=0;i<16;i++){
         const btn=document.createElement('button');
         HTMLButtonElement.type='button';
-        btn.className='card logo-bg';
+        btn.className='logo-bg';
         const cardFlipped=document.createElement('img');
         cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
         cardFlipped.className='hidden flipped';
@@ -48,45 +49,30 @@ document.addEventListener('DOMContentLoaded', function(){
   let firstCardFlipped;
   cardGrid.addEventListener('click', function(e){
     if (e.target.nodeName === 'BUTTON'){
-      const coveredCard=e.target;
-      const flippedCard=coveredCard.firstChild;
-      toggling(coveredCard,['white-bg', 'logo-bg']);
-      flippedCard.classList.toggle('hidden');
+      toggling([e.target],['white-bg', 'logo-bg']);  //flip the card
+      e.target.firstChild.classList.toggle('hidden');
+
       if (!wasTheFirstCardFlipped){
-        firstCardFlipped=storingImgName(flippedCard);
-        // flippedCard.classList.toggle('first');
-        // coveredCard.classList.toggle('first');
         wasTheFirstCardFlipped=true;
+        firstCardFlipped=cardObj('first',e.target);
       }
       else {
-          const secondImgValue=storingImgName(flippedCard);
           wasTheFirstCardFlipped=false;
-          if (firstCardFlipped===secondImgValue){
-          const couple=document.querySelectorAll('img[src="'+firstCardFlipped+'"]');
-          guess(couple, 'success');
-          }
-          else {
-            //animation fail
-            const firstFlippedCard=document.querySelector('img[src="'+firstCardFlipped+'"]');
-            const couple=[firstFlippedCard, flippedCard];
-            console.log(couple);
-            guess(couple, 'hidden');
-            const btnOfCouple=[];
-            for (let i=0; couple.length;i++){
-              btnOfCouple.push(couple[i].parentNode);
-            }
-            console.log(btnOfCouple);
-            toggling(flippedFirstCard[1], ['hidden']);
-            toggling(flippedFirstCard[0],['white-bg', 'logo-bg']);
-            toggling(flippedCard, ['hidden']);
-            toggling(coveredCard, ['white-bg', 'logo-bg']);
-          }
-
+          const secondCardFlipped=cardObj('second',e.target);
+          const couple=[firstCardFlipped.imgObj, secondCardFlipped.imgObj];
+          if (couple[0].getAttribute('src')===couple[1].getAttribute('src')){
+          toggling(couple, ['success']);
+          //add some animation success
+           }
+           else {
+             toggling(couple, ['hidden']);
+             toggling([firstCardFlipped.btnObj,secondCardFlipped.btnObj],['white-bg','logo-bg']);
+           }
       }
     }
 
 
 
-  })
+  });
 
 });
