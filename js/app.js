@@ -15,40 +15,46 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   }
 
-  const fragment=document.createDocumentFragment();
-  let nameJpg=sorting(8);
-  for (let i=0;i<16;i++){
-      const btn=document.createElement('button');
-      HTMLButtonElement.type='button';
-      btn.className='card logo-bg';
-      const cardFlipped=document.createElement('img');
-      cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
-      cardFlipped.className='hidden flipped';
-      btn.appendChild(cardFlipped);
+  function storingImgName(Img){
+    return Img.getAttribute('src');
+  }
 
-      fragment.appendChild(btn);
+  function createDeck(){
+    const fragment=document.createDocumentFragment();
+    let nameJpg=sorting(8);
+    for (let i=0;i<16;i++){
+        const btn=document.createElement('button');
+        HTMLButtonElement.type='button';
+        btn.className='card logo-bg';
+        const cardFlipped=document.createElement('img');
+        cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
+        cardFlipped.className='hidden flipped';
+        btn.appendChild(cardFlipped);
+        fragment.appendChild(btn);
+    }
+    cardGrid.appendChild(fragment);
   }
   const cardGrid=document.querySelector('.grid');
-  cardGrid.appendChild(fragment);
+  createDeck();
 
-  let firstCardFlipped=false;
+  let wasTheFirstCardFlipped=false;
+  let firstCardFlipped;
   cardGrid.addEventListener('click', function(e){
     if (e.target.nodeName === 'BUTTON'){
       const coveredCard=e.target;
       const flippedCard=coveredCard.firstChild;
       toggling(coveredCard,['white-bg', 'logo-bg']);
       flippedCard.classList.toggle('hidden');
-      if (!firstCardFlipped){
-        flippedCard.classList.toggle('first');
-        coveredCard.classList.toggle('first');
-        firstCardFlipped=true;
+      if (!wasTheFirstCardFlipped){
+        firstCardFlipped=storingImgName(flippedCard);
+        // flippedCard.classList.toggle('first');
+        // coveredCard.classList.toggle('first');
+        wasTheFirstCardFlipped=true;
       }
       else {
-          const flippedFirstCard=document.querySelectorAll('.first');
-          const flippedImgValue=flippedFirstCard[1].getAttribute('src');
-          const secondImgValue=flippedCard.getAttribute('src');
-          firstCardFlipped=false;
-          if (flippedImgValue===secondImgValue){
+          const secondImgValue=storingImgName(flippedCard);
+          wasTheFirstCardFlipped=false;
+          if (firstCardFlipped===secondImgValue){
             //animation success
             toggling(flippedFirstCard[0],['success']);
             toggling(coveredCard, ['success'])
