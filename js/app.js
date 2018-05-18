@@ -32,11 +32,10 @@ document.addEventListener('DOMContentLoaded', function(){
     console.log(nameJpg);
     for (let i=0;i<16;i++){
         const btn=document.createElement('button');
-        HTMLButtonElement.type='button';
-        btn.className='logo-bg';
+        btn.className='logo-bg round-border';
         const cardFlipped=document.createElement('img');
         cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
-        cardFlipped.className='hidden flipped';
+        cardFlipped.className='hidden flipped round-border';
         btn.appendChild(cardFlipped);
         fragment.appendChild(btn);
     }
