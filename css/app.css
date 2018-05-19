@@ -1,19 +1,30 @@
 /*animation************************************/
-.animate-in {
-  transform: rotateY(180deg);
+.grid {
+  perspective: 500px;
 }
 
-.animate-out {
-  transform: rotateY(180deg);
-}
-
-.animate-in:focus,
-.animate-out {
+.card{
+  position: relative;
   transition: 1s;
+  transform-style: preserve-3d;
+}
+
+.face{
+  position: absolute;
+  width:100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.back{
+  transform: rotateY(180deg);
+}
+
+.flip {
+  transform: rotateY(180deg);
 }
 
 #deck{
-  max-width: 150px;
   margin: auto;
 }
 
@@ -25,21 +36,11 @@
   height: 80vh;
 }
 
-.card{
-  grid-column-start: auto;
-  grid-column-end: auto;
-}
 
-.hidden{
-  display: none;
-}
+
 
 .white-bg{
   background-color: white;
-}
-
-.logo-bg{
-  background-image: url('https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
 }
 
 .success{
@@ -51,23 +52,7 @@
   opacity: 0.8;
 }
 
-button{
-  min-height: 30px;
-  padding: 0;
-  border: 0;
-  background-size: contain;
-  display:
-}
 
-button:focus{
-  outline: none;
-}
-
-img{
-  margin: 0;
-  width: 100%;
-  height: 100%;
-}
 
 .round-border{
   border-radius: 3px;

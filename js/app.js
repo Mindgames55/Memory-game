@@ -31,13 +31,17 @@ document.addEventListener('DOMContentLoaded', function(){
     let nameJpg=sorting(8);
     console.log(nameJpg);
     for (let i=0;i<16;i++){
-        const btn=document.createElement('button');
-        btn.className='logo-bg round-border';
+        const card=document.createElement('div');
+        card.className='card';
+        const cover=document.createElement('img');
+        cover.setAttribute('src','https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
+        cover.className='round-border front face';
         const cardFlipped=document.createElement('img');
         cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
-        cardFlipped.className='hidden flipped round-border';
-        btn.appendChild(cardFlipped);
-        fragment.appendChild(btn);
+        cardFlipped.className='back flipped round-border face';
+        card.appendChild(cover);
+        card.appendChild(cardFlipped)
+        fragment.appendChild(card);
     }
     cardGrid.appendChild(fragment);
   }
@@ -47,27 +51,30 @@ document.addEventListener('DOMContentLoaded', function(){
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
   cardGrid.addEventListener('click', function(e){
-    if (e.target.nodeName === 'BUTTON'){
-      toggling([e.target],['animate-in']);  //flip the card
-      e.target.firstChild.classList.toggle('animate-out', 'hidden');
+    if (e.target.nodeName === 'IMG' & !wasTheFirstCardFlipped){
 
-      if (!wasTheFirstCardFlipped){
-        wasTheFirstCardFlipped=true;
-        firstCardFlipped=cardObj('first',e.target);
-      }
-      else {
-          wasTheFirstCardFlipped=false;
-          const secondCardFlipped=cardObj('second',e.target);
-          const couple=[firstCardFlipped.imgObj, secondCardFlipped.imgObj];
-          if (couple[0].getAttribute('src')===couple[1].getAttribute('src')){
-          toggling(couple, ['success']);
-          //add some animation success
-           }
-           else {
-             toggling(couple, ['hidden']);
-             toggling([firstCardFlipped.btnObj,secondCardFlipped.btnObj],['white-bg','logo-bg']);
-           }
-      }
+
+
+       toggling([e.target.parentNode],['flip']);  //flip the card
+      // e.target.firstChild.classList.toggle('animate-out', 'hidden');
+      //
+      // if (!wasTheFirstCardFlipped){
+      //   wasTheFirstCardFlipped=true;
+      //   firstCardFlipped=cardObj('first',e.target);
+      // }
+      // else {
+      //     wasTheFirstCardFlipped=false;
+      //     const secondCardFlipped=cardObj('second',e.target);
+      //     const couple=[firstCardFlipped.imgObj, secondCardFlipped.imgObj];
+      //     if (couple[0].getAttribute('src')===couple[1].getAttribute('src')){
+      //     toggling(couple, ['success']);
+      //     //add some animation success
+      //      }
+      //      else {
+      //        toggling(couple, ['hidden']);
+      //        toggling([firstCardFlipped.btnObj,secondCardFlipped.btnObj],['white-bg','logo-bg']);
+      //      }
+      // }
     }
 
 
