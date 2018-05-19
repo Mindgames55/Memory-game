@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', function(){
   let firstCardFlipped;
   cardGrid.addEventListener('click', function(e){
     if (e.target.nodeName === 'BUTTON'){
-      toggling([e.target],['white-bg', 'logo-bg']);  //flip the card
-      e.target.firstChild.classList.toggle('hidden');
+      toggling([e.target],['animate-in']);  //flip the card
+      e.target.firstChild.classList.toggle('animate-out', 'hidden');
 
       if (!wasTheFirstCardFlipped){
         wasTheFirstCardFlipped=true;
