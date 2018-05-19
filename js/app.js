@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', function(){
     return array.sort(function(a, b){return 0.5 - Math.random()});
   }
 //creates current card object
-  function cardObj(whichCard, btn){
-      let Card={
+  function cardObj(whichCard, clicked){
+      let card={
       name: whichCard,
-      btnObj: btn,
-      imgObj: btn.firstChild
+      imgFrontObj: clicked,
+      imgBackObj: clicked.parentNode.lastChild,
     };
-    return Card;
+    return card;
   }
 //toggling classes to objects
   function toggling(elements, classesArray){
@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function(){
         card.className='card';
         const cover=document.createElement('img');
         cover.setAttribute('src','https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
+        cover.setAttribute('id','cover');
         cover.className='round-border front face';
         const cardFlipped=document.createElement('img');
         cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
@@ -51,30 +52,25 @@ document.addEventListener('DOMContentLoaded', function(){
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
   cardGrid.addEventListener('click', function(e){
-    if (e.target.nodeName === 'IMG' & !wasTheFirstCardFlipped){
-
-
-
-       toggling([e.target.parentNode],['flip']);  //flip the card
-      // e.target.firstChild.classList.toggle('animate-out', 'hidden');
-      //
-      // if (!wasTheFirstCardFlipped){
-      //   wasTheFirstCardFlipped=true;
-      //   firstCardFlipped=cardObj('first',e.target);
-      // }
-      // else {
-      //     wasTheFirstCardFlipped=false;
-      //     const secondCardFlipped=cardObj('second',e.target);
-      //     const couple=[firstCardFlipped.imgObj, secondCardFlipped.imgObj];
-      //     if (couple[0].getAttribute('src')===couple[1].getAttribute('src')){
-      //     toggling(couple, ['success']);
-      //     //add some animation success
-      //      }
-      //      else {
-      //        toggling(couple, ['hidden']);
-      //        toggling([firstCardFlipped.btnObj,secondCardFlipped.btnObj],['white-bg','logo-bg']);
-      //      }
-      // }
+    if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
+      toggling([e.target.parentNode],['flip']);  //flip the card
+      if (!wasTheFirstCardFlipped){
+        wasTheFirstCardFlipped=true;
+        firstCardFlipped=cardObj('first',e.target);
+      }
+      else {
+        console.log('second');
+          wasTheFirstCardFlipped=false;
+          const secondCardFlipped=cardObj('second',e.target);
+          const couple=[firstCardFlipped.imgBackObj, secondCardFlipped.imgBackObj];
+          if (couple[0].getAttribute('src')===couple[1].getAttribute('src')){
+          toggling(couple, ['success']);
+          //add some animation success
+           }
+           else {
+             toggling(couple, ['flip']);
+           }
+      }
     }
 
 
