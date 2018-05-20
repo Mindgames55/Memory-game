@@ -60,11 +60,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
-  // cardGrid.addEventListener('mouseover',function(e){
-  //   if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
-  //     e.target.parentNode.className='card';
-  //   }
-  // })
   cardGrid.addEventListener('click', function(e){
     if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
       toggling([e.target.parentNode],['flip']);  //flip the card
@@ -73,24 +68,23 @@ document.addEventListener('DOMContentLoaded', function(){
         firstCardFlipped=cardObj('first',e.target);
       }
       else {
-        console.log('second');
           wasTheFirstCardFlipped=false;
           const secondCardFlipped=cardObj('second',e.target);
-          const couple=[firstCardFlipped, secondCardFlipped];
-          if (couple[0].imgBackObj.getAttribute('src')===couple[1].imgBackObj.getAttribute('src')){
-          toggling([couple[0].imgBackObj,couple[1].imgBackObj], ['success']);
-          //add some animation success
+          if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
+            setTimeout(function(){
+              toggling([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success']);
+            },500);
            }
            else {
-             toggling([couple[0].divObj, couple[1].divObj], ['animation-fail']);
-             console.log('fail');
-             let o=0;
-             couple[0].divObj.addEventListener('animationend', function(){
-               console.log('restoring values '+ o++);
-               removing([couple[0].divObj,couple[1].divObj],['flip','animation-fail']);
-             })
+             setTimeout(function(){
+               removing([firstCardFlipped.divObj,secondCardFlipped.divObj],['flip']);
+             },1000);
+
+
              //add some animation for fail
            }
+
+
       }
     }
 

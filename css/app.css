@@ -32,17 +32,8 @@
   transform: rotateY(180deg);
 }
 
-
- .animation-fail{
-  animation-name: fail;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
-  animation-delay: 0.5s;
-}
-
-@keyframes fail {
-  from{transform: rotateY(180deg);}
-  to{transform: rotateY(0deg);}
+.fail{
+  background: red;
 }
 
 .success{
