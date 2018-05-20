@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function(){
       name: whichCard,
       imgFrontObj: clicked,
       imgBackObj: clicked.parentNode.lastChild,
+      divObj:clicked.parentNode
     };
     return card;
   }
@@ -22,6 +23,14 @@ document.addEventListener('DOMContentLoaded', function(){
     for (let j=0;j<elements.length;j++){
       for (let i=0;i<classesArray.length;i++){
         elements[j].classList.toggle(classesArray[i]);
+      }
+    }
+  }
+
+  function removing(elements, classesArray){
+    for (let j=0;j<elements.length;j++){
+      for (let i=0;i<classesArray.length;i++){
+        elements[j].classList.remove(classesArray[i]);
       }
     }
   }
@@ -51,6 +60,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
+  // cardGrid.addEventListener('mouseover',function(e){
+  //   if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
+  //     e.target.parentNode.className='card';
+  //   }
+  // })
   cardGrid.addEventListener('click', function(e){
     if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
       toggling([e.target.parentNode],['flip']);  //flip the card
@@ -62,19 +76,29 @@ document.addEventListener('DOMContentLoaded', function(){
         console.log('second');
           wasTheFirstCardFlipped=false;
           const secondCardFlipped=cardObj('second',e.target);
-          const couple=[firstCardFlipped.imgBackObj, secondCardFlipped.imgBackObj];
-          if (couple[0].getAttribute('src')===couple[1].getAttribute('src')){
-          toggling(couple, ['success']);
+          const couple=[firstCardFlipped, secondCardFlipped];
+          if (couple[0].imgBackObj.getAttribute('src')===couple[1].imgBackObj.getAttribute('src')){
+          toggling([couple[0].imgBackObj,couple[1].imgBackObj], ['success']);
           //add some animation success
            }
            else {
-             toggling(couple, ['flip']);
+             toggling([couple[0].divObj, couple[1].divObj], ['animation-fail']);
+             console.log('fail');
+             let o=0;
+             couple[0].divObj.addEventListener('animationend', function(){
+               console.log('restoring values '+ o++);
+               removing([couple[0].divObj,couple[1].divObj],['flip','animation-fail']);
+             })
+             //add some animation for fail
            }
       }
     }
 
 
 
+
   });
+
+
 
 });

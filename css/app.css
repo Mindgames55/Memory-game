@@ -32,6 +32,19 @@
   transform: rotateY(180deg);
 }
 
+
+ .animation-fail{
+  animation-name: fail;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes fail {
+  from{transform: rotateY(180deg);}
+  to{transform: rotateY(0deg);}
+}
+
 .success{
   border:1px solid #37ba49;
   background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Antu_task-complete.svg/128px-Antu_task-complete.svg.png');
