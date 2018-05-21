@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function(){
-  // this function creates and array with couples of random numbers from 1 to limSup.
+  // creates and array with couples of random numbers from 1 to limSup.
   function sorting(limSup){
     let array=[];
     for (let i=1;i<=2*limSup;i++){
@@ -18,24 +18,45 @@ document.addEventListener('DOMContentLoaded', function(){
     };
     return card;
   }
-//toggling classes to objects
-  function toggling(elements, classesArray){
-    for (let j=0;j<elements.length;j++){
-      for (let i=0;i<classesArray.length;i++){
-        elements[j].classList.toggle(classesArray[i]);
+//toggling classes to objects allowing right timing for animation
+  function classAction(elements, classesArray,action,timeDelay){
+    setTimeout(function(){
+      for (let j=0;j<elements.length;j++){
+        for (let i=0;i<classesArray.length;i++){
+          if (action === 'toggle'){
+            elements[j].classList.toggle(classesArray[i]);
+          }
+          else {
+            elements[j].classList.remove(classesArray[i]);
+          }
+        }
       }
-    }
+    },timeDelay);
   }
 
-  function removing(elements, classesArray){
-    for (let j=0;j<elements.length;j++){
-      for (let i=0;i<classesArray.length;i++){
-        elements[j].classList.remove(classesArray[i]);
-      }
+  function stopCounter(startingDate){
+    return Date.now()-startingDate;
+  }
+
+  function checkIfWon(iniDate){
+    console.log(iniDate);
+    if (counterCouple=8){
+      const header=document.querySelector('.header');
+      const time=(stopCounter(iniDate)/1000).toFixed(1);
+      setTimeout(function(){
+        const content=`<h1 class="winning-mess">You Won in ${time} seconds!!!</h1>`;
+        cardGrid.innerHTML=content;
+        cardGrid.classList.add('gameWon');
+        header.classList.add('winning-mess');
+        start.textContent='Play Again';
+        cardGrid.appendChild(header);
+      },500);
+      counterCouple=0;
     }
   }
 
   function createDeck(){
+    cardGrid.innerHTML='';
     const fragment=document.createDocumentFragment();
     let nameJpg=sorting(8);
     console.log(nameJpg);
@@ -55,44 +76,42 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     cardGrid.appendChild(fragment);
   }
-  const cardGrid=document.querySelector('.grid');
-  createDeck();
+  let cardGrid=document.querySelector('.grid');
+  const start=document.querySelector('.start');
 
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
-  cardGrid.addEventListener('click', function(e){
-    if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
-      toggling([e.target.parentNode],['flip']);  //flip the card
-      if (!wasTheFirstCardFlipped){
-        wasTheFirstCardFlipped=true;
-        firstCardFlipped=cardObj('first',e.target);
-      }
-      else {
-          wasTheFirstCardFlipped=false;
-          const secondCardFlipped=cardObj('second',e.target);
-          if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
-            setTimeout(function(){
-              toggling([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success']);
-            },500);
-           }
-           else {
-             setTimeout(function(){
-               removing([firstCardFlipped.divObj,secondCardFlipped.divObj],['flip']);
-             },1000);
-
-
-             //add some animation for fail
-           }
-
-
-      }
+  let counterCouple=0;
+  start.addEventListener('click',function(){
+    if (start.textContent==='Play Again'){
+      classAction([cardGrid],['gameWon'],'remove');
     }
-
-
-
-
-  });
-
-
-
+    console.log('starting');
+    createDeck();
+    const startingDate=Date.now();
+    start.textContent='Reset';
+    cardGrid.addEventListener('click', function(e){
+      if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
+        classAction([e.target.parentNode],['flip'],'toggle',0);  //flip the card
+        if (!wasTheFirstCardFlipped){
+          wasTheFirstCardFlipped=true;
+          firstCardFlipped=cardObj('first',e.target);
+        }
+        else {
+            wait=true;
+            wasTheFirstCardFlipped=false;
+            const secondCardFlipped=cardObj('second',e.target);
+            if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
+                classAction([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success'],'toggle',500);
+              counterCouple++;
+             }
+             else {
+                 classAction([firstCardFlipped.divObj,secondCardFlipped.divObj],['flip'],'remove',500);
+             }
+        }
+      }
+      console.log(startingDate);
+      checkIfWon(startingDate);
+    });
+  })
 });

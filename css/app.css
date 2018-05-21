@@ -1,14 +1,58 @@
 /*animation************************************/
+body{
+  margin: 40px;
+  font-size: 20px;
+}
+
 .grid {
   perspective: 500px;
   position: relative;
-  max-width: 140px;
+  max-width: 574px;
   margin: auto;
+  margin-top: 50px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-auto-columns: 1fr;
   grid-gap: 10px;
-  height: 80vh;
+  height: 70vh;
+}
+
+.header{
+  margin: 0;
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-rows: 40px;
+  grid-template-areas: "rating buttons timer"
+}
+
+.rating{
+  grid-area: rating;
+}
+
+.buttons{
+  grid-area: buttons;
+  display: flex;
+  margin: 10px;
+}
+
+.btn{
+  margin: 10px;
+  width: 80px;
+  padding: 5px;
+  border-radius:5px;
+  border: #02B3E4 solid 3px;
+  background-color: #fff;
+  font-weight: bold;
+  color: blue;
+}
+
+span{
+  color: blue;
+}
+
+.timer{
+  grid-area: timer;
 }
 
 .card{
@@ -32,19 +76,54 @@
   transform: rotateY(180deg);
 }
 
-.fail{
-  background: red;
-}
-
 .success{
-  border:1px solid #37ba49;
+  border:4px solid #37ba49;
   background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Antu_task-complete.svg/128px-Antu_task-complete.svg.png');
-  background-size: 8px;
+  background-size: 20px;
   background-repeat: no-repeat;
   background-position: bottom right;
   opacity: 0.8;
 }
 
+.gameWon{
+  display: flex;
+  flex-wrap: wrap;
+  background-color: lightgray;
+  opacity: 0.5;
+}
+
+.winning-mess{
+  margin: 20px;
+  width: 100%;
+  font-size: 2em;
+  text-align: center;
+  color: green;
+}
+
+.winning-mess i{
+  font-size: 20px;
+}
+
+.fa{
+  padding: 0;
+  margin: 0;
+  color: #02B3E4;
+}
+
 .round-border{
-  border-radius: 3px;
+  border-radius: 10px;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.text-center{
+  text-align: center;
+  color: #02B3E4;
+}
+
+.align-center{
+  align-self: center;
+  justify-content: center;
 }
