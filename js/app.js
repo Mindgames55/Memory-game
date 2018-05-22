@@ -34,8 +34,25 @@ document.addEventListener('DOMContentLoaded', function(){
     },timeDelay);
   }
 
-  function stopCounter(startingDate){
-    return Date.now()-startingDate;
+  function timeCounter(){
+    timeNow=((Date.now()-startingDate)/1000).toFixed(0);
+    return timeNow;
+  }
+
+  function setTimerOnPage(){
+    let t=timeCounter();
+    let min=Math.floor(t/60);
+    let sec=t%60;
+    const string=leadingCeros(min, sec);
+    console.log(string);
+    document.getElementById('timer').textContent=string;
+  }
+
+  function leadingCeros(min,sec){
+    const cero='0';
+    let minString=(min<10)?cero+min:''+min;
+    let secString=(sec<10)?cero+sec:''+sec;
+    return `${minString}:${secString}`
   }
 
   function reloading(){
@@ -43,12 +60,11 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function checkIfWon(iniDate){
-    console.log(iniDate);
-    if (counterCouple=8){
+    if (counterCouple===8){
+      const time=timeCounter();
       const header=document.querySelector('.header');
-      const time=(stopCounter(iniDate)/1000).toFixed(1);
       setTimeout(function(){
-        const content=`<h1 class="winning-mess">You Won in ${time} seconds!!!</h1>`;
+        const content=`<h1 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h1>`;
         cardGrid.innerHTML=content;
         cardGrid.classList.add('gameWon');
         header.classList.add('winning-mess');
@@ -56,7 +72,10 @@ document.addEventListener('DOMContentLoaded', function(){
         start.remove();
         document.querySelector('.play-again').addEventListener('click',reloading);
         cardGrid.appendChild(header);
+        header.insertAdjacentHTML('beforebegin','<div class="emoji"></div>');
+
       },500);
+      clearInterval(timer);
     }
   }
 
@@ -107,16 +126,22 @@ document.addEventListener('DOMContentLoaded', function(){
     cardGrid.appendChild(fragment);
   }
   let cardGrid=document.querySelector('.grid');
+  cardGrid.classList.add('hidden');
   const start=document.querySelector('.start');
 
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
   let counterCouple=0;
   let startingDate;
+  let timer;
   const flipEvent=start.addEventListener('click',function(){
+    classAction(document.querySelectorAll('.desappear'),['hidden'],'toggle');
+    cardGrid.classList.remove('hidden');
     console.log('starting');
     createDeck();
     startingDate=Date.now();
+    timer=setInterval(setTimerOnPage,1000);
+    console.log(timer+'hhh');
     start.textContent='Reset';
 
     cardGrid.addEventListener('click', flipCard);
