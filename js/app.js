@@ -38,6 +38,10 @@ document.addEventListener('DOMContentLoaded', function(){
     return Date.now()-startingDate;
   }
 
+  function reloading(){
+    location.reload();
+  }
+
   function checkIfWon(iniDate){
     console.log(iniDate);
     if (counterCouple=8){
@@ -48,12 +52,38 @@ document.addEventListener('DOMContentLoaded', function(){
         cardGrid.innerHTML=content;
         cardGrid.classList.add('gameWon');
         header.classList.add('winning-mess');
-        start.textContent='Play Again';
+        start.insertAdjacentHTML('afterend', `<button class="play-again btn align-center">Play Again</button>`);
+        start.remove();
+        document.querySelector('.play-again').addEventListener('click',reloading);
         cardGrid.appendChild(header);
       },500);
-      counterCouple=0;
     }
   }
+
+  function flipCard(e){
+      if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
+        classAction([e.target.parentNode],['flip'],'toggle',0);  //flip the card
+        if (!wasTheFirstCardFlipped){
+          wasTheFirstCardFlipped=true;
+          firstCardFlipped=cardObj('first',e.target);
+        }
+        else {
+            wait=true;
+            wasTheFirstCardFlipped=false;
+            const secondCardFlipped=cardObj('second',e.target);
+            if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
+                classAction([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success'],'toggle',500);
+              counterCouple++;
+             }
+             else {
+                 classAction([firstCardFlipped.divObj,secondCardFlipped.divObj],['flip'],'remove',500);
+             }
+        }
+      }
+      console.log(startingDate);
+      checkIfWon(startingDate);
+    };
+
 
   function createDeck(){
     cardGrid.innerHTML='';
@@ -82,36 +112,13 @@ document.addEventListener('DOMContentLoaded', function(){
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
   let counterCouple=0;
-  start.addEventListener('click',function(){
-    if (start.textContent==='Play Again'){
-      classAction([cardGrid],['gameWon'],'remove');
-    }
+  let startingDate;
+  const flipEvent=start.addEventListener('click',function(){
     console.log('starting');
     createDeck();
-    const startingDate=Date.now();
+    startingDate=Date.now();
     start.textContent='Reset';
-    cardGrid.addEventListener('click', function(e){
-      if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
-        classAction([e.target.parentNode],['flip'],'toggle',0);  //flip the card
-        if (!wasTheFirstCardFlipped){
-          wasTheFirstCardFlipped=true;
-          firstCardFlipped=cardObj('first',e.target);
-        }
-        else {
-            wait=true;
-            wasTheFirstCardFlipped=false;
-            const secondCardFlipped=cardObj('second',e.target);
-            if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
-                classAction([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success'],'toggle',500);
-              counterCouple++;
-             }
-             else {
-                 classAction([firstCardFlipped.divObj,secondCardFlipped.divObj],['flip'],'remove',500);
-             }
-        }
-      }
-      console.log(startingDate);
-      checkIfWon(startingDate);
-    });
-  })
+
+    cardGrid.addEventListener('click', flipCard);
+  });
 });
