@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function checkIfWon(iniDate){
-    if (counterCouple=8){
+    if (counterCouple===8){
       const time=timeCounter();
       const header=document.querySelector('.header');
       setTimeout(function(){
@@ -92,13 +92,17 @@ document.addEventListener('DOMContentLoaded', function(){
       },500);
       clearInterval(timer);
       cardGrid.removeEventListener('click', flipCard);
+      if (moves<=localStorage.getItem("master")||JSON.parse(localStorage.getItem("leaders")).length<5){
+        setTimeout(function(){
+          createBoard();
+        },500)
+      }
     }
   }
 
   function thingsToRemove(){
     const thingsToBeRemove=document.querySelectorAll('.disappear');
     for (let i=0;i<thingsToBeRemove.length;i++){
-      thingsToBeRemove[i].classList.remove('panel');
       thingsToBeRemove[i].remove();
     }
   }
@@ -126,6 +130,64 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       checkIfWon(startingDate);
     };
+
+  function getLeaderName(){
+    const person = prompt("Please enter your name:", "Memory Game Master");
+    if (person !== null && person !== "") {
+      console.log(person);
+      return person;
+    }
+  }
+
+  function storagePerson(){
+    const leader={
+      name: getLeaderName(),
+      moves: moves,
+      time: timeCounter()
+    };
+    return leader;
+
+  }
+
+  function updateLeaderBoard(objects){
+    objects.sort(function(a, b){return (a.moves-b.moves===0)?a.time-b.time:a.moves-b.moves});  //sorts by number of moves. In case they are equal it is sorted by time.
+  }
+
+  function createBoard(){
+    // let leaders=[];
+    let leaders=JSON.parse(localStorage.getItem("leaders"));
+    if (leaders.length>=5){
+      leaders.splice(leaders.length-1,1,storagePerson());
+    }
+    else {
+      leaders.push(storagePerson());
+    }
+    updateLeaderBoard(leaders);
+    localStorage.setItem("leaders", JSON.stringify(leaders));
+    localStorage.setItem("master",leaderEntries[leaderEntries.length-1].moves);
+    console.log(leaderEntries[leaderEntries.length-1].moves);
+    createBoardOnPage(leaderEntries);
+  }
+
+  function createBoardOnPage(users){
+    leadersBoard.innerHTML=[];
+    let piece=document.createDocumentFragment();
+    for (i=0;i<users.length;i++){
+      let name=document.createElement('p');
+      name.textContent=users[i].name;
+      let moves=document.createElement('p');
+      moves.textContent=users[i].moves;
+      let time=document.createElement('p');
+      time.textContent=users[i].time+' s';
+      name.className='leader-name';
+      moves.className='leader-moves';
+      time.className='leader-time';
+      piece.appendChild(name);
+      piece.appendChild(moves);
+      piece.appendChild(time);
+    }
+    leadersBoard.appendChild(piece);
+  }
 
 
   function createDeck(){
@@ -160,10 +222,16 @@ document.addEventListener('DOMContentLoaded', function(){
   let timer;
   let moves;
   let indexDif=6;
+  const leadersBoard=document.getElementById('board-body');
+  const leaderEntries=JSON.parse(localStorage.getItem("leaders"));
+  createBoardOnPage(leaderEntries);
+
   const flipEvent=start.addEventListener('click',function(e){
     // classAction(document.querySelectorAll('.desappear'),['hidden'],'toggle',0);
     cardGrid.classList.remove('hidden');
     cardGrid.classList.add('panel');
+    leadersBoard.classList.add('hidden');
+    leadersBoard.classList.remove('panel');
     createDeck();
     startingDate=Date.now();
     moves=0;

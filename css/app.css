@@ -154,21 +154,22 @@ span{
 p{
   text-align: left;
   margin: 5px;
-  padding: 20px;
-}
-
-#credit{
-  margin: 0;
+  padding: 5px;
 }
 
 .footer{
   position: fixed;
   bottom: 0;
   width: 100%;
-  color:#fff;
-  background-color: #02B3E4;
+  color:#02B3E4;
   text-align: center;
   padding: 10px;
+}
+
+.footerTwo{
+  background-color: #02B3E4;
+  padding: 10px;
+  color: #fff;
 }
 
 a{
@@ -188,20 +189,29 @@ a{
 
 .acknowledge{
   max-width: 580px;
-  margin: auto;
-  border: 3px solid #02B3E4;
 }
 
 .panel .head{
   background-color: #02B3E4;
   color: #fff;
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
 }
 
-.icons-attribution{
+#board-body{
   color: #02B3E4;
   border-radius: 5px;
-  line-height: 2em;
-  padding: 10px;
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+}
+
+.leader-name{
+  text-transform: capitalize;
+}
+
+.leader-moves,
+.leader-time {
+  text-align: center;
 }
 
 .emoji{
