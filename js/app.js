@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function(){
     let index=(num>22 && num<26)?4:(num>=26 && num<30)?3:(num>=30 && num<35)?2:(num>=35 && num<42)?1:(num>=42)?0:undefined;
     if (index!==undefined && index!==indexDif){
       indexDif=index;
-      console.log(stars[index].classList + stars);
       classAction([stars[index]],['fa-star','fa-star-o'],'toggle',0);
     }
   }
@@ -75,14 +74,14 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function checkIfWon(iniDate){
-    if (counterCouple===8){
+    if (counterCouple=8){
       const time=timeCounter();
       const header=document.querySelector('.header');
       setTimeout(function(){
         const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
         cardGrid.innerHTML=content;
-        cardGrid.classList.add('gameWon');
-        header.classList.add('winning-mess');
+        cardGrid.className='gameWon';
+        header.classList.add('winning-mess', 'headerFinish');
         document.querySelector('#title').className='hidden';
         start.insertAdjacentHTML('afterend', `<button class="play-again btn align-center">Play Again</button>`);
         start.remove();
@@ -97,10 +96,9 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function thingsToRemove(){
-    console.log('rrr');
     const thingsToBeRemove=document.querySelectorAll('.disappear');
-    console.log(thingsToBeRemove);
     for (let i=0;i<thingsToBeRemove.length;i++){
+      thingsToBeRemove[i].classList.remove('panel');
       thingsToBeRemove[i].remove();
     }
   }
@@ -126,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function(){
              }
         }
       }
-      console.log(startingDate);
       checkIfWon(startingDate);
     };
 
@@ -136,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function(){
     thingsToRemove();
     const fragment=document.createDocumentFragment();
     let nameJpg=sorting(8);
-    console.log(nameJpg);
     for (let i=0;i<16;i++){
         const card=document.createElement('div');
         card.className='card';
@@ -167,12 +163,11 @@ document.addEventListener('DOMContentLoaded', function(){
   const flipEvent=start.addEventListener('click',function(e){
     // classAction(document.querySelectorAll('.desappear'),['hidden'],'toggle',0);
     cardGrid.classList.remove('hidden');
-    console.log('starting');
+    cardGrid.classList.add('panel');
     createDeck();
     startingDate=Date.now();
     moves=0;
     timer=setInterval(setTimerOnPage,1000);
-    console.log(timer+'hhh');
     start.textContent='Reset';
 
     cardGrid.addEventListener('click', flipCard);
