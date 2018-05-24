@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 //checks if every card was matched and displays the winning banner
   function checkIfWon(iniDate){
-    if (counterCouple===8){
+    if (counterCouple=8){
       const time=timeCounter();
       const header=document.querySelector('.header');
       const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
@@ -95,14 +95,15 @@ document.addEventListener('DOMContentLoaded', function(){
         start.remove();
         document.querySelector('.play-again').addEventListener('click',reloading);
         cardGrid.appendChild(header);
-        const board=header.insertAdjacentElement('beforebegin',leadersBoard.parentNode);
         if (moves<=localStorage.getItem("master")||JSON.parse(localStorage.getItem("leaders")).length<5){
           createBoard();
-          board.className='board';
+          console.log('inside the if'+leadersBoard);
         }
-        else {
-          board.className='board';
-        }
+        const board=header.insertAdjacentElement('beforebegin',leadersBoard.parentNode);
+        console.log('outside the if'+leadersBoard);
+
+
+        board.className='board';
         page.outerHTML=cardGrid.outerHTML;
       },500);
       clearInterval(timer);
@@ -163,16 +164,19 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   //creates the board and storages it on local storage
   function createBoard(){
-    let leaders=[];
-    // let leaders=JSON.parse(localStorage.getItem("leaders"));
+    // let leaders=[];
+    let leaders=JSON.parse(localStorage.getItem("leaders"));
     if (leaders.length>=5){
-      leaders.splice(leaders.length-1,1,storagePerson());
+      leaders.splice(-1,1,storagePerson());
     }
     else {
       leaders.push(storagePerson());
     }
+    console.log('lkeadersssss');
+    console.log(leaders);
     updateLeaderBoard(leaders);
     localStorage.setItem("leaders", JSON.stringify(leaders));
+    leaderEntries=JSON.parse(localStorage.getItem("leaders"));
     localStorage.setItem("master",leaderEntries[leaderEntries.length-1].moves);
     createBoardOnPage(leaderEntries);
   }
@@ -195,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function(){
       piece.appendChild(time);
     }
     leadersBoard.appendChild(piece);
+    console.log(leadersBoard);
   }
 
 //creates the deck of cards and adds it to the DOM
@@ -233,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function(){
   let moves;
   let indexDif=6;
   const leadersBoard=document.getElementById('board-body');
-  const leaderEntries=JSON.parse(localStorage.getItem("leaders"));
+  let leaderEntries=JSON.parse(localStorage.getItem("leaders"));
   createBoardOnPage(leaderEntries);
 
 //creates the start button event listener
@@ -242,7 +247,8 @@ document.addEventListener('DOMContentLoaded', function(){
     cardGrid.classList.remove('hidden');
     cardGrid.classList.add('panel');
     document.getElementById('leaders-board').classList.add('hidden');
-    leadersBoard.classList.add('hidden');
+    // document.getElementById('leaders-board').remove();
+    // leadersBoard.classList.add('hidden');
     leadersBoard.classList.remove('panel');
     createDeck();
     startingDate=Date.now();

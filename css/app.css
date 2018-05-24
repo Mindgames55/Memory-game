@@ -1,6 +1,7 @@
 body {
   font-size: 20px;
   color: #02B3E4;
+  margin: 10px;
 }
 
 .wrapper {
@@ -115,7 +116,7 @@ span {
   background-image: url('../img/svg/cool.svg');
   background-repeat: no-repeat;
   background-position: top 60% right 50%;
-  background-size: 20%;
+  background-size: 13%;
   animation: emojiTransition 4s infinite;
 }
 
@@ -169,15 +170,18 @@ p {
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
+  padding-top: 20px;
+  position: relative;
+  bottom: 40px;
   width: 100%;
   color:#02B3E4;
   text-align: center;
-  padding: 10px;
 }
 
 .footerTwo {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   background-color: #02B3E4;
   padding: 10px;
   color: #fff;
@@ -257,7 +261,7 @@ a {
   }
 
   .wrapper{
-    grid-template-rows: 1fr 1fr 7fr;
+    grid-template-rows: 1fr 1fr 5fr;
     grid-template-areas: "title" "header" "panel";
   }
 
