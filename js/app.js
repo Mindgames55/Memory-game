@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function(){
     let index=(num>22 && num<26)?4:(num>=26 && num<30)?3:(num>=30 && num<35)?2:(num>=35 && num<42)?1:(num>=42)?0:undefined;
     if (index!==undefined && index!==indexDif){
       indexDif=index;
-      classAction([stars[index]],['fa-star','fa-star-o'],'toggle',0);
+      stars[index].classList.add('fa-star-o');
     }
   }
 //displays the leading ceros for the display of the timer
@@ -75,17 +75,16 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 //refreshes the page
   function reloading(){
-    console.log('rell');
     location.reload();
   }
 //checks if every card was matched and displays the winning banner
   function checkIfWon(iniDate){
-    if (counterCouple=8){
+    if (counterCouple===8){
+      cardGrid.removeEventListener('click', flipCard);
+      document.querySelector('.wrapper').className='';
       const time=timeCounter();
       const header=document.querySelector('.header');
       const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
-      const page=document.querySelector('.wrapper');
-
       setTimeout(function(){ //some delay to allow animation of the last card before showing the winning message
         cardGrid.innerHTML=content;
         cardGrid.className='gameWon';
@@ -97,17 +96,11 @@ document.addEventListener('DOMContentLoaded', function(){
         cardGrid.appendChild(header);
         if (moves<=localStorage.getItem("master")||JSON.parse(localStorage.getItem("leaders")).length<5){
           createBoard();
-          console.log('inside the if'+leadersBoard);
         }
         const board=header.insertAdjacentElement('beforebegin',leadersBoard.parentNode);
-        console.log('outside the if'+leadersBoard);
-
-
         board.className='board';
-        page.outerHTML=cardGrid.outerHTML;
       },500);
       clearInterval(timer);
-      cardGrid.removeEventListener('click', flipCard);
     }
   }
 //removes Nodes
