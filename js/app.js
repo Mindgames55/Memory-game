@@ -27,18 +27,23 @@ document.addEventListener('DOMContentLoaded', function(){
             elements[j].classList.toggle(classesArray[i]);
           }
           else {
-            elements[j].classList.remove(classesArray[i]);
+            if (action === 'remove'){
+              elements[j].classList.remove(classesArray[i]);
+            }
+            else {
+              elements[j].classList.add(classesArray[i]);
+            }
           }
         }
       }
     },timeDelay);
   }
-
+//gives the elapsed time since the game began
   function timeCounter(){
     timeNow=((Date.now()-startingDate)/1000).toFixed(0);
     return timeNow;
   }
-
+// displays the time on the page
   function setTimerOnPage(){
     let t=timeCounter();
     let min=Math.floor(t/60);
@@ -46,13 +51,13 @@ document.addEventListener('DOMContentLoaded', function(){
     const string='Timer '+leadingCeros(min, sec);
     document.getElementById('timer').textContent=string;
   }
-
+//displays how many moves the user has done
   function movesNumber(moves){
     let movesString=document.getElementById('moves');
     movesString.textContent='Moves: '+moves;
     emptyStars(moves);
   }
-
+//makes the user to lose stars depending on the number of moves
   function emptyStars(num){
     const stars=document.querySelectorAll('.fa');
     let index=(num>22 && num<26)?4:(num>=26 && num<30)?3:(num>=30 && num<35)?2:(num>=35 && num<42)?1:(num>=42)?0:undefined;
@@ -61,55 +66,60 @@ document.addEventListener('DOMContentLoaded', function(){
       classAction([stars[index]],['fa-star','fa-star-o'],'toggle',0);
     }
   }
-
+//displays the leading ceros for the display of the timer
   function leadingCeros(min,sec){
     const cero='0';
     let minString=(min<10)?cero+min:''+min;
     let secString=(sec<10)?cero+sec:''+sec;
     return `${minString}:${secString}`
   }
-
+//refreshes the page
   function reloading(){
+    console.log('rell');
     location.reload();
   }
-
+//checks if every card was matched and displays the winning banner
   function checkIfWon(iniDate){
     if (counterCouple===8){
       const time=timeCounter();
       const header=document.querySelector('.header');
-      setTimeout(function(){
-        const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
+      const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
+      const page=document.querySelector('.wrapper');
+
+      setTimeout(function(){ //some delay to allow animation of the last card before showing the winning message
         cardGrid.innerHTML=content;
         cardGrid.className='gameWon';
-        header.classList.add('winning-mess', 'headerFinish');
+        header.classList.add('winning-mess');
         document.querySelector('#title').className='hidden';
         start.insertAdjacentHTML('afterend', `<button class="play-again btn align-center">Play Again</button>`);
         start.remove();
         document.querySelector('.play-again').addEventListener('click',reloading);
         cardGrid.appendChild(header);
-        header.insertAdjacentHTML('beforebegin','<div class="emoji"></div>');
-
+        const board=header.insertAdjacentElement('beforebegin',leadersBoard.parentNode);
+        if (moves<=localStorage.getItem("master")||JSON.parse(localStorage.getItem("leaders")).length<5){
+          createBoard();
+          board.className='board';
+        }
+        else {
+          board.className='board';
+        }
+        page.outerHTML=cardGrid.outerHTML;
       },500);
       clearInterval(timer);
       cardGrid.removeEventListener('click', flipCard);
-      if (moves<=localStorage.getItem("master")||JSON.parse(localStorage.getItem("leaders")).length<5){
-        setTimeout(function(){
-          createBoard();
-        },500)
-      }
     }
   }
-
+//removes Nodes
   function thingsToRemove(){
     const thingsToBeRemove=document.querySelectorAll('.disappear');
     for (let i=0;i<thingsToBeRemove.length;i++){
       thingsToBeRemove[i].remove();
     }
   }
-
+//flips the card when the users clicks on it if it is covered
   function flipCard(e){
       if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
-        movesNumber(moves++);
+        movesNumber(++moves);
         classAction([e.target.parentNode],['flip'],'toggle',0);  //flip the card
         if (!wasTheFirstCardFlipped){
           wasTheFirstCardFlipped=true;
@@ -130,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       checkIfWon(startingDate);
     };
-
+//displays the pop up box to get the name of a new record
   function getLeaderName(){
     const person = prompt("Please enter your name:", "Memory Game Master");
     if (person !== null && person !== "") {
@@ -138,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function(){
       return person;
     }
   }
-
+//creates an object with the data of the user with a new record
   function storagePerson(){
     const leader={
       name: getLeaderName(),
@@ -146,16 +156,15 @@ document.addEventListener('DOMContentLoaded', function(){
       time: timeCounter()
     };
     return leader;
-
   }
-
+//sorts by number of moves. In case they are equal it is sorted by time.
   function updateLeaderBoard(objects){
-    objects.sort(function(a, b){return (a.moves-b.moves===0)?a.time-b.time:a.moves-b.moves});  //sorts by number of moves. In case they are equal it is sorted by time.
+    objects.sort(function(a, b){return (a.moves-b.moves===0)?a.time-b.time:a.moves-b.moves});
   }
-
+  //creates the board and storages it on local storage
   function createBoard(){
-    // let leaders=[];
-    let leaders=JSON.parse(localStorage.getItem("leaders"));
+    let leaders=[];
+    // let leaders=JSON.parse(localStorage.getItem("leaders"));
     if (leaders.length>=5){
       leaders.splice(leaders.length-1,1,storagePerson());
     }
@@ -165,10 +174,9 @@ document.addEventListener('DOMContentLoaded', function(){
     updateLeaderBoard(leaders);
     localStorage.setItem("leaders", JSON.stringify(leaders));
     localStorage.setItem("master",leaderEntries[leaderEntries.length-1].moves);
-    console.log(leaderEntries[leaderEntries.length-1].moves);
     createBoardOnPage(leaderEntries);
   }
-
+//adds the board to the DOM
   function createBoardOnPage(users){
     leadersBoard.innerHTML=[];
     let piece=document.createDocumentFragment();
@@ -189,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function(){
     leadersBoard.appendChild(piece);
   }
 
-
+//creates the deck of cards and adds it to the DOM
   function createDeck(){
     cardGrid.innerHTML='';
     thingsToRemove();
@@ -211,6 +219,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     cardGrid.appendChild(fragment);
   }
+
+  //global
   let cardGrid=document.querySelector('.grid');
   cardGrid.classList.add('hidden');
   const start=document.querySelector('.start');
@@ -226,15 +236,18 @@ document.addEventListener('DOMContentLoaded', function(){
   const leaderEntries=JSON.parse(localStorage.getItem("leaders"));
   createBoardOnPage(leaderEntries);
 
+//creates the start button event listener
   const flipEvent=start.addEventListener('click',function(e){
     // classAction(document.querySelectorAll('.desappear'),['hidden'],'toggle',0);
     cardGrid.classList.remove('hidden');
     cardGrid.classList.add('panel');
+    document.getElementById('leaders-board').classList.add('hidden');
     leadersBoard.classList.add('hidden');
     leadersBoard.classList.remove('panel');
     createDeck();
     startingDate=Date.now();
     moves=0;
+    movesNumber(moves);
     timer=setInterval(setTimerOnPage,1000);
     start.textContent='Reset';
 

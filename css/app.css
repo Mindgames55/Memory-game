@@ -1,16 +1,15 @@
-/*animation************************************/
-body{
+body {
   font-size: 20px;
   color: #02B3E4;
 }
 
-.wrapper{
+.wrapper {
   display: grid;
   grid-template-columns: 100%;
   justify-items:center;
 }
 
-#title{
+#title {
   grid-area:title;
   margin-bottom: 0;
 }
@@ -24,24 +23,25 @@ body{
   grid-gap: 10px;
 }
 
-.header{
+.header {
   margin: 0;
+  width: 100%;
   display: grid;
   grid-area: header;
 }
 
-.rating{
+.rating {
   grid-area: rating;
   margin-right: 10px;
 }
 
-.buttons{
+.buttons {
   grid-area: buttons;
   display: flex;
   margin: 10px;
 }
 
-.btn{
+.btn {
   margin: 10px;
   width: 80px;
   padding: 5px;
@@ -52,15 +52,15 @@ body{
   color: blue;
 }
 
-.btn:focus{
+.btn:focus {
   outline: none;
 }
 
-span{
+span {
   color: blue;
 }
 
-.timer{
+.timer {
   grid-area: timer;
   display: flex;
   flex-wrap: nowrap;
@@ -69,28 +69,28 @@ span{
   align-items: center;
 }
 
-.timer p{
+.timer p {
   padding: 0;
 }
 
-.card{
+.card {
   position: relative;
   transition: 0.5s;
   transform-style: preserve-3d;
 }
 
-.face{
+.face {
   position: absolute;
   width:100%;
   height: 100%;
   backface-visibility: hidden;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-.back{
+.back {
   transform: rotateY(180deg);
 }
 
@@ -98,7 +98,7 @@ span{
   transform: rotateY(180deg);
 }
 
-.success{
+.success {
   border:4px solid #37ba49;
   background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Antu_task-complete.svg/128px-Antu_task-complete.svg.png');
   background-size: 20px;
@@ -107,57 +107,68 @@ span{
   opacity: 0.8;
 }
 
-.gameWon{
-  display: flex;
-  flex-wrap: wrap;
+.gameWon {
   opacity: 0.5;
-  margin-top: 20px;
+  display: flex;
+  flex-wrap:wrap;
+  padding: 50px;
+  background-image: url('../img/svg/cool.svg');
+  background-repeat: no-repeat;
+  background-position: top 60% right 50%;
+  background-size: 20%;
+  animation: emojiTransition 4s infinite;
 }
 
-.winning-mess{
+.winning-mess {
   margin: 20px;
   width: 100%;
   font-size: 2em;
   text-align: center;
 }
 
-.winning-mess p{
+.board {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+.winning-mess p {
   font-size: 18px;
 }
 
-.winning-mess i{
+.winning-mess i {
   font-size: 20px;
 }
 
-.fa{
+.fa {
   padding: 0;
   margin: 4px;
 }
 
-.round-border{
+.round-border {
   border-radius: 10px;
 }
 
-.text-right{
+.text-right {
   text-align: right;
 }
 
-.text-center{
+.text-center {
   text-align: center;
 }
 
-.align-center{
+.align-center {
   align-self: center;
   justify-content: center;
 }
 
-p{
+p {
   text-align: left;
   margin: 5px;
   padding: 5px;
 }
 
-.footer{
+.footer {
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -166,46 +177,42 @@ p{
   padding: 10px;
 }
 
-.footerTwo{
+.footerTwo {
   background-color: #02B3E4;
   padding: 10px;
   color: #fff;
 }
 
-a{
+a {
   text-decoration: none;
   color: blue;
 }
 
-.icons-attribution{
-  text-align: left;
+.icons-attribution {
 }
 
-.panel{
+.panel {
   border-radius: 5px;
   grid-area:panel;
   width: 100%;
-}
-
-.acknowledge{
   max-width: 580px;
 }
 
-.panel .head{
+.head {
   background-color: #02B3E4;
   color: #fff;
   display: grid;
   grid-template-columns: 3fr 1fr 1fr;
 }
 
-#board-body{
+#board-body {
   color: #02B3E4;
-  border-radius: 5px;
   display: grid;
   grid-template-columns: 3fr 1fr 1fr;
+  text-align: left;
 }
 
-.leader-name{
+.leader-name {
   text-transform: capitalize;
 }
 
@@ -214,26 +221,17 @@ a{
   text-align: center;
 }
 
-.emoji{
-  width: 100%;
-  height: 300px;
-  background-image: url('../img/svg/cool.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  animation: emojiTransition 4s infinite;
+.empty {
+  color:#fff;
+  border:solid;
 }
 
-@keyframes emojiTransition{
+@keyframes emojiTransition {
   0% {  background-image: url('../img/svg/cool.svg');}
   25% { background-image: url('../img/svg/happy.svg');}
   50% {  background-image: url('../img/svg/in-love.svg');}
   75% {  background-image: url('../img/svg/smiling.svg');}
   100% {  background-image: url('../img/svg/cool.svg');}
-}
-
-.empty{
-  color:#fff;
-  border:solid;
 }
 
 @media screen and (max-width: 539px) {
@@ -282,7 +280,7 @@ a{
     grid-template-rows: 1fr 1fr 2.5fr;
   }
 
-  .acknowledge{
+  .panel{
     margin-top: 0;
   }
 }
