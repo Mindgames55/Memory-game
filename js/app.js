@@ -193,6 +193,9 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       leadersBoardBody.appendChild(piece);
     }
+    else {
+      leadersBoardBody.innerHTML='<p>Local storage is not supported by your browser. It is nos possible to generate a Leaderboard</p>'
+    }
   }
 
 //creates the deck of cards and adds it to the DOM
