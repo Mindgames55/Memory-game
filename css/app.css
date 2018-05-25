@@ -91,10 +91,7 @@ span {
   display: none;
 }
 
-.back {
-  transform: rotateY(180deg);
-}
-
+.back,
 .flip {
   transform: rotateY(180deg);
 }
@@ -113,11 +110,27 @@ span {
   display: flex;
   flex-wrap:wrap;
   padding: 50px;
+}
+
+#youWon {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.emoji{
   background-image: url('../img/svg/cool.svg');
   background-repeat: no-repeat;
-  background-position: top 60% right 50%;
-  background-size: 13%;
+  /* background-position: top 60% right 50%; */
   animation: emojiTransition 4s infinite;
+  width: 20%;
+  height: 150px;
+  /* background-size: 13%; */
+}
+
+#winning-title {
+  margin: 50px 0 0 20px;
+  width: 80%;
 }
 
 .winning-mess {
@@ -318,9 +331,11 @@ a {
     grid-template-areas: "title" "header" "panel";
   }
 
-  .grid{
-    max-width: 580px;
+  .maxWidth{
+    max-width: 700px;
+    margin: auto;
   }
+
 }
 
 @media screen and (max-width: 425px){

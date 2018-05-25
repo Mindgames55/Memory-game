@@ -78,9 +78,12 @@ document.addEventListener('DOMContentLoaded', function(){
       cardGrid.removeEventListener('click', flipCard);
       const time=timeCounter();
       const header=document.querySelector('.header');
-      const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
+      const content=`<div id="youWon">
+                        <div class="emoji"></div>
+                        <h2 id="winning-title" class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>
+                    </div>`;
       setTimeout(function(){ //some delay to allow animation of the last card before showing the winning message
-        document.querySelector('.wrapper').className='';
+        document.querySelector('.wrapper').className='maxWidth';
         cardGrid.innerHTML=content;
         cardGrid.className='gameWon';
         header.classList.add('winning-mess');
