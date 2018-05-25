@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 //checks if every card was matched and displays the winning banner
   function checkIfWon(iniDate){
-    if (counterCouple===8){
+    if (counterCouple=8){
       cardGrid.removeEventListener('click', flipCard);
       const time=timeCounter();
       const header=document.querySelector('.header');
@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   //creates the board and storages it on local storage
   function createBoard(){
-    leaders=JSON.parse(localStorage.getItem("leaders"));
     if (leaders.length>=5){
       leaders.splice(-1,1,storagePerson());
     }
@@ -237,11 +236,14 @@ document.addEventListener('DOMContentLoaded', function(){
   let indexDif=6;
   let leaders;
   if (typeof(Storage) !== "undefined"){
-    let leaderEntries=(JSON.parse(localStorage.getItem("leaders"))===null)?[]:JSON.parse(localStorage.getItem("leaders"));//get the leaders board from local storage
-    if (leaderEntries===[]){
-      localStorage.setItem("leaders", JSON.stringify(leaderEntries));
+    if (JSON.parse(localStorage.getItem("leaders"))!==null){
+      leaders=JSON.parse(localStorage.getItem("leaders"));
     }
-    createBoardOnPage(leaderEntries), true);
+    else {
+      leaders=[];
+      localStorage.setItem("leaders", JSON.stringify(leaders));
+    }
+    createBoardOnPage(leaders, true);
   }
   else {
     createBoardOnPage([], false);
