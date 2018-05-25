@@ -27,12 +27,7 @@ document.addEventListener('DOMContentLoaded', function(){
             elements[j].classList.toggle(classesArray[i]);
           }
           else {
-            if (action === 'remove'){
               elements[j].classList.remove(classesArray[i]);
-            }
-            else {
-              elements[j].classList.add(classesArray[i]);
-            }
           }
         }
       }
@@ -81,11 +76,11 @@ document.addEventListener('DOMContentLoaded', function(){
   function checkIfWon(iniDate){
     if (counterCouple===8){
       cardGrid.removeEventListener('click', flipCard);
-      document.querySelector('.wrapper').className='';
       const time=timeCounter();
       const header=document.querySelector('.header');
       const content=`<h2 class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>`;
       setTimeout(function(){ //some delay to allow animation of the last card before showing the winning message
+        document.querySelector('.wrapper').className='';
         cardGrid.innerHTML=content;
         cardGrid.className='gameWon';
         header.classList.add('winning-mess');
@@ -97,34 +92,28 @@ document.addEventListener('DOMContentLoaded', function(){
         if (moves<=localStorage.getItem("master")||JSON.parse(localStorage.getItem("leaders")).length<5){
           createBoard();
         }
-        const board=header.insertAdjacentElement('beforebegin',leadersBoard.parentNode);
+        const board=header.insertAdjacentElement('beforebegin',leadersBoardBody.parentNode);
         board.className='board';
       },500);
       clearInterval(timer);
     }
   }
-//removes Nodes
-  function thingsToRemove(){
-    const thingsToBeRemove=document.querySelectorAll('.disappear');
-    for (let i=0;i<thingsToBeRemove.length;i++){
-      thingsToBeRemove[i].remove();
-    }
-  }
-//flips the card when the users clicks on it if it is covered
+
+//flips the card when the users clicks on it, if it is covered
   function flipCard(e){
       if (e.target.nodeName === 'IMG' && e.target.getAttribute('id')==='cover'){
         movesNumber(++moves);
-        classAction([e.target.parentNode],['flip'],'toggle',0);  //flip the card
+        e.target.parentNode.classList.add('flip');
         if (!wasTheFirstCardFlipped){
           wasTheFirstCardFlipped=true;
           firstCardFlipped=cardObj('first',e.target);
         }
         else {
-            wait=true;
             wasTheFirstCardFlipped=false;
             const secondCardFlipped=cardObj('second',e.target);
             if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
                 classAction([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success'],'toggle',500);
+                console.log('success');
               counterCouple++;
              }
              else {
@@ -136,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function(){
     };
 //displays the pop up box to get the name of a new record
   function getLeaderName(){
-    const person = prompt("Please enter your name:", "Memory Game Master");
+    const person = prompt("You have set a new record, enter your name:", "Memory Game Master");
     if (person !== null && person !== "") {
       console.log(person);
       return person;
@@ -152,22 +141,25 @@ document.addEventListener('DOMContentLoaded', function(){
     return leader;
   }
 //sorts by number of moves. In case they are equal it is sorted by time.
-  function updateLeaderBoard(objects){
+  function orderLeaderBoard(objects){
     objects.sort(function(a, b){return (a.moves-b.moves===0)?a.time-b.time:a.moves-b.moves});
+  }
+  //refreshes the leaders Board
+  function refresLeadersBoard(){
+    leaders=[];
+    localStorage.setItem("leaders", JSON.stringify(leaders));
+    createBoardOnPage(leaders);
   }
   //creates the board and storages it on local storage
   function createBoard(){
-    // let leaders=[];
-    let leaders=JSON.parse(localStorage.getItem("leaders"));
+    leaders=JSON.parse(localStorage.getItem("leaders"));
     if (leaders.length>=5){
       leaders.splice(-1,1,storagePerson());
     }
     else {
       leaders.push(storagePerson());
     }
-    console.log('lkeadersssss');
-    console.log(leaders);
-    updateLeaderBoard(leaders);
+    orderLeaderBoard(leaders);
     localStorage.setItem("leaders", JSON.stringify(leaders));
     leaderEntries=JSON.parse(localStorage.getItem("leaders"));
     localStorage.setItem("master",leaderEntries[leaderEntries.length-1].moves);
@@ -175,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 //adds the board to the DOM
   function createBoardOnPage(users){
-    leadersBoard.innerHTML=[];
+    leadersBoardBody.innerHTML=[];
     let piece=document.createDocumentFragment();
     for (i=0;i<users.length;i++){
       let name=document.createElement('p');
@@ -191,14 +183,16 @@ document.addEventListener('DOMContentLoaded', function(){
       piece.appendChild(moves);
       piece.appendChild(time);
     }
-    leadersBoard.appendChild(piece);
-    console.log(leadersBoard);
+    leadersBoardBody.appendChild(piece);
   }
 
 //creates the deck of cards and adds it to the DOM
   function createDeck(){
     cardGrid.innerHTML='';
-    thingsToRemove();
+    const thingsToRemove=document.querySelectorAll('.disappear');  //hides footer and icons attribution from the page one the game is started
+    for (let i=0;i<thingsToRemove.length;i++){
+      thingsToRemove[i].className='hidden';
+    }
     const fragment=document.createDocumentFragment();
     let nameJpg=sorting(8);
     for (let i=0;i<16;i++){
@@ -210,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function(){
         cover.className='round-border front face';
         const cardFlipped=document.createElement('img');
         cardFlipped.setAttribute('src','img/svg/'+nameJpg[i]+'.svg');
-        cardFlipped.className='back flipped round-border face';
+        cardFlipped.className='back round-border face';
         card.appendChild(cover);
         card.appendChild(cardFlipped)
         fragment.appendChild(card);
@@ -219,10 +213,10 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   //global
-  let cardGrid=document.querySelector('.grid');
-  cardGrid.classList.add('hidden');
+  const cardGrid=document.querySelector('.grid');
   const start=document.querySelector('.start');
-
+  const leadersBoardBody=document.getElementById('board-body');
+  const refresh=document.querySelector('.fa-refresh');
   let wasTheFirstCardFlipped=false;
   let firstCardFlipped;
   let counterCouple=0;
@@ -230,27 +224,22 @@ document.addEventListener('DOMContentLoaded', function(){
   let timer;
   let moves;
   let indexDif=6;
-  const leadersBoard=document.getElementById('board-body');
-  let leaderEntries=JSON.parse(localStorage.getItem("leaders"));
+  let leaders;
+  let leaderEntries=JSON.parse(localStorage.getItem("leaders"));  //get the leaders board from local storage
   createBoardOnPage(leaderEntries);
-
+//creates the click event of the refresh the leaders board icons
+refresh.addEventListener('click',refresLeadersBoard);
 //creates the start button event listener
   const flipEvent=start.addEventListener('click',function(e){
-    // classAction(document.querySelectorAll('.desappear'),['hidden'],'toggle',0);
     cardGrid.classList.remove('hidden');
     cardGrid.classList.add('panel');
-    document.getElementById('leaders-board').classList.add('hidden');
-    // document.getElementById('leaders-board').remove();
-    // leadersBoard.classList.add('hidden');
-    leadersBoard.classList.remove('panel');
+    document.getElementById('leaders-board').className='hidden';
     createDeck();
     startingDate=Date.now();
     moves=0;
     movesNumber(moves);
     timer=setInterval(setTimerOnPage,1000);
     start.textContent='Reset';
-
     cardGrid.addEventListener('click', flipCard);
-
   });
 });
