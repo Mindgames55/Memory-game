@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 //checks if every card was matched and displays the winning banner
   function checkIfWon(iniDate){
-    if (counterCouple=8){
+    if (counterCouple===8){
       cardGrid.removeEventListener('click', flipCard);
       const time=timeCounter();
       const header=document.querySelector('.header');
@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function(){
             wasTheFirstCardFlipped=false;
             const secondCardFlipped=cardObj('second',e.target);
             if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
+              console.log('success');
                 classAction([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success'],'toggle',500);
               counterCouple++;
              }
@@ -227,9 +228,9 @@ document.addEventListener('DOMContentLoaded', function(){
   const start=document.querySelector('.start');
   const leadersBoardBody=document.getElementById('board-body');
   const refresh=document.querySelector('.fa-refresh');
-  let wasTheFirstCardFlipped=false;
+  let wasTheFirstCardFlipped;
   let firstCardFlipped;
-  let counterCouple=0;
+  let counterCouple;
   let startingDate;
   let timer;
   let moves;
@@ -258,8 +259,15 @@ refresh.addEventListener('click',refreshLeadersBoard);
     createDeck();
     startingDate=Date.now();
     moves=0;
+    counterCouple=0;
+    wasTheFirstCardFlipped=false;
+    const rating=document.querySelectorAll('.fa-star');
+    for (let i=0;i<rating.length;i++){
+      rating[i].classList.remove('fa-star-o');
+    }
     movesNumber(moves);
-    timer=window.setInterval(setTimerOnPage,1000);
+    clearInterval(timer);//clear the setInterval call if the user click reset.
+    timer=setInterval(setTimerOnPage,1000);
     start.textContent='Reset';
     cardGrid.addEventListener('click', flipCard);
   });
