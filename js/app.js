@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function(){
 // displays the time on the page
   function setTimerOnPage(){
     let t=timeCounter();
-    console.log(t);
     let min=Math.floor(t/60);
     let sec=t%60;
     const string='Timer '+leadingCeros(min, sec);
