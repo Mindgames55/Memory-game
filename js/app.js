@@ -238,8 +238,11 @@ document.addEventListener('DOMContentLoaded', function(){
   let indexDif=6;
   let leaders;
   if (typeof(Storage) !== "undefined"){
-    let leaderEntries=JSON.parse(localStorage.getItem("leaders"));  //get the leaders board from local storage
-    createBoardOnPage(leaderEntries, true);
+    let leaderEntries=(JSON.parse(localStorage.getItem("leaders"))===null)?[]:JSON.parse(localStorage.getItem("leaders"));//get the leaders board from local storage
+    if (leaderEntries===[]){
+      localStorage.setItem("leaders", JSON.stringify(leaderEntries));
+    }
+    createBoardOnPage(leaderEntries), true);
   }
   else {
     createBoardOnPage([], false);
