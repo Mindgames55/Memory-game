@@ -120,7 +120,6 @@ document.addEventListener('DOMContentLoaded', function(){
             wasTheFirstCardFlipped=false;
             const secondCardFlipped=cardObj('second',e.target);
             if (firstCardFlipped.imgBackObj.getAttribute('src')===secondCardFlipped.imgBackObj.getAttribute('src')){
-              console.log('success');
                 classAction([firstCardFlipped.imgBackObj,secondCardFlipped.imgBackObj], ['success'],'toggle',500);
               counterCouple++;
              }
