@@ -16,6 +16,7 @@ body {
 }
 
 .grid {
+  -webkit-perspective: 500px;
   perspective: 500px;
   position: relative;
   display: grid;
@@ -76,7 +77,9 @@ span {
 
 .card {
   position: relative;
+  -webkit-transition: 0.5s;
   transition: 0.5s;
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   border: #02B3E4 solid 3px;
   border-radius: 7px;
@@ -86,6 +89,7 @@ span {
   position: absolute;
   width:100%;
   height: 100%;
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
@@ -95,6 +99,7 @@ span {
 
 .back,
 .flip {
+  -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
 
@@ -126,6 +131,7 @@ span {
   margin-left: 20px;
   background-image: url('../img/svg/cool.svg');
   background-repeat: no-repeat;
+  -webkit-animation: emojiTransition 4s infinite;
   animation: emojiTransition 4s infinite;
   width: 20%;
 }
@@ -280,6 +286,14 @@ a {
 }
 
 @keyframes emojiTransition {
+  0% {  background-image: url('../img/svg/cool.svg');}
+  25% { background-image: url('../img/svg/happy.svg');}
+  50% {  background-image: url('../img/svg/in-love.svg');}
+  75% {  background-image: url('../img/svg/smiling.svg');}
+  100% {  background-image: url('../img/svg/cool.svg');}
+}
+
+@-webkit-keyframes emojiTransition {
   0% {  background-image: url('../img/svg/cool.svg');}
   25% { background-image: url('../img/svg/happy.svg');}
   50% {  background-image: url('../img/svg/in-love.svg');}
