@@ -129,8 +129,9 @@ span {
 
 .emoji{
   margin-left: 20px;
-  background-image: url('../img/svg/cool.svg');
   background-repeat: no-repeat;
+  background-size: contain;
+  -webkit-background-size: contain;
   -webkit-animation: emojiTransition 4s infinite;
   animation: emojiTransition 4s infinite;
   width: 20%;
