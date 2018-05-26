@@ -22,6 +22,7 @@ Functionalities on this game were created using javascript.
 ## Acknowledgements
 * [Good-Ware](https://www.flaticon.com/authors/good-ware) - Images used on the back on every cards
 * [Twitter](https://www.flaticon.com/authors/twitter) - Icons used on animation
+* [Roundicons](https://www.flaticon.com/authors/roundicons) - Images used on the front of every card
 
 ## Author
 
