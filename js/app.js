@@ -76,11 +76,11 @@ document.addEventListener('DOMContentLoaded', function(){
   function checkIfWon(iniDate){
     if (counterCouple===8){
       cardGrid.removeEventListener('click', flipCard);
-      const time=timeCounter();
+      timeWon=timeCounter();
       const header=document.querySelector('.header');
       const content=`<div id="youWon">
                         <div class="emoji"></div>
-                        <h2 id="winning-title" class="winning-mess">You Won in <span>${time}</span> seconds!!!</h2>
+                        <h2 id="winning-title" class="winning-mess">You Won in <span>${timeWon}</span> seconds!!!</h2>
                     </div>`;
       setTimeout(function(){ //some delay to allow animation of the last card before showing the winning message
         document.querySelector('.wrapper').className='maxWidth';
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const leader={
       name: getLeaderName(),
       moves: moves,
-      time: timeCounter()
+      time: timeWon
     };
     return leader;
   }
@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function(){
   let moves;
   let indexDif=6;
   let leaders;
+  let timeWon;
   if (typeof(Storage) !== "undefined"){
     if (JSON.parse(localStorage.getItem("leaders"))!==null){
       leaders=JSON.parse(localStorage.getItem("leaders"));
