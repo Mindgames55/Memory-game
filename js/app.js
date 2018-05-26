@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function(){
         const card=document.createElement('div');
         card.className='card';
         const cover=document.createElement('img');
-        cover.setAttribute('src','https://res-4.cloudinary.com/hireclub/image/upload/c_fill,f_auto,g_north,h_200,q_auto,w_200/pyhntzkpmxmoaaj8ksfu');
+        cover.setAttribute('src','img/question.svg');
         cover.setAttribute('id','cover');
         cover.className='round-border front face';
         const cardFlipped=document.createElement('img');

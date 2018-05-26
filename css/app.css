@@ -78,6 +78,8 @@ span {
   position: relative;
   transition: 0.5s;
   transform-style: preserve-3d;
+  border: #02B3E4 solid 3px;
+  border-radius: 7px;
 }
 
 .face {
