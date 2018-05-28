@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 //makes the user to lose stars depending on the number of moves
   function emptyStars(num){
-    const stars=document.querySelectorAll('.fa');
+    const stars=document.querySelectorAll('.fa-star');
     let index=(num>22 && num<26)?4:(num>=26 && num<30)?3:(num>=30 && num<35)?2:(num>=35 && num<42)?1:(num>=42)?0:undefined;
     if (index!==undefined && index!==indexDif){
       indexDif=index;
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function(){
   let startingDate;
   let timer;
   let moves;
-  let indexDif=6;
+  let indexDif;
   let leaders;
   let timeWon;
   if (typeof(Storage) !== "undefined"){
@@ -261,6 +261,7 @@ refresh.addEventListener('click',refreshLeadersBoard);
     moves=0;
     counterCouple=0;
     wasTheFirstCardFlipped=false;
+    indexDif=6;
     const rating=document.querySelectorAll('.fa-star');
     for (let i=0;i<rating.length;i++){
       rating[i].classList.remove('fa-star-o');
