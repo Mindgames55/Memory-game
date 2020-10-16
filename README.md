@@ -1,6 +1,6 @@
 # Project Title
 
-Memory game you can play it [here](https://mindgames55.github.io/Memory-game/)
+Memory game
 
 ## How to Play
 
